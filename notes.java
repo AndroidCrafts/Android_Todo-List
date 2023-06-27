@@ -16,6 +16,9 @@
             --> TIP: calendarView.setOnDateChangeListener(...) --> get date from the calendarView
             --> TIP: Calender.getInstance().set(Year,month,day) --> to set the date to the selected calendarView date
             
-NOT_DONE -> 8-
+8-
             - get dueDate from chips
             --> TIP: Calender.getInstance().add(Calendar.DAY_OF_YEAR, 0); -> set up today. if we give it 1 value it will give it tomorrow date and so on.
+                
+0-          NOT-DONE -> set Listen to the clicks on  each todo row to get its                 proper position and task
+            TIP: using an interface is a better way for this job.          
