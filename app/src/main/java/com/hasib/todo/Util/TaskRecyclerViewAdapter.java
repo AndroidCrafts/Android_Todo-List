@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -21,9 +22,11 @@ import java.util.Objects;
 
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder> {
     private final List<Task> tasks;
+    private final TaskClickListener taskClickListener;
 
-    public TaskRecyclerViewAdapter(List<Task> tasks) {
+    public TaskRecyclerViewAdapter(List<Task> tasks, TaskClickListener taskClickListener) {
         this.tasks = tasks;
+        this.taskClickListener = taskClickListener;
     }
 
     @NonNull
@@ -49,13 +52,17 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         return tasks.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
         private final Chip chip;
+        private final TaskClickListener taskClick;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
              textView = itemView.findViewById(R.id.task_id);
              chip = itemView.findViewById(R.id.chip_id);
+             taskClick = taskClickListener;
+             itemView.setOnClickListener(this);
         }
 
         public Chip getChip() {
@@ -64,6 +71,14 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
         public TextView getTextView() {
             return textView;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Task currentTask = tasks.get(getAdapterPosition());
+            if(v.getId() == R.id.task_row_layout){
+                taskClick.taskClicked(getAdapterPosition(), currentTask);
+            }
         }
     }
 }

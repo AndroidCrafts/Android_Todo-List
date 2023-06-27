@@ -1,0 +1,38 @@
+Index: notes.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>1- Create the room database for Task\r\n\r\n2- When Floating-A-B clicked add new Task to the database\r\n\r\n3- Retrieve data -> observer\r\n\r\n4- format the date and add it to the view\r\n\r\n5- display bottomSheet fragment\r\n\r\n6- save a todo from bottomSheet data\r\n\r\n7- \r\n            - make visible and gone the hidden calendar section\r\n            - get the dueDate from calendarView.\r\n            --> TIP: calendarView.setOnDateChangeListener(...) --> get date from the calendarView\r\n            --> TIP: Calender.getInstance().set(Year,month,day) --> to set the date to the selected calendarView date\r\n            \r\nNOT_DONE -> 8-\r\n            - get dueDate from chips\r\n            --> TIP: Calender.getInstance().add(Calendar.DAY_OF_YEAR, 0); -> set up today. if we give it 1 value it will give it tomorrow date and so on.\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/notes.java b/notes.java
+--- a/notes.java	(revision a27d3b05a201918ba83ebe6570e2875c021b2484)
++++ b/notes.java	(date 1687866208323)
+@@ -16,6 +16,9 @@
+             --> TIP: calendarView.setOnDateChangeListener(...) --> get date from the calendarView
+             --> TIP: Calender.getInstance().set(Year,month,day) --> to set the date to the selected calendarView date
+             
+-NOT_DONE -> 8-
++8-
+             - get dueDate from chips
+             --> TIP: Calender.getInstance().add(Calendar.DAY_OF_YEAR, 0); -> set up today. if we give it 1 value it will give it tomorrow date and so on.
++                
++0-          NOT-DONE -> set Listen to the clicks on  each todo row to get its                 proper position and task
++            TIP: using an interface is a better way for this job.          
+Index: app/src/main/java/com/hasib/todo/Util/TaskClickListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/hasib/todo/Util/TaskClickListener.java b/app/src/main/java/com/hasib/todo/Util/TaskClickListener.java
+new file mode 100644
+--- /dev/null	(date 1687893600288)
++++ b/app/src/main/java/com/hasib/todo/Util/TaskClickListener.java	(date 1687893600288)
+@@ -0,0 +1,7 @@
++package com.hasib.todo.Util;
++
++import com.hasib.todo.Model.Task;
++
++public interface TaskClickListener {
++    void taskClicked(int id, Task task);
++}

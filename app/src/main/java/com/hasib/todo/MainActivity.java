@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,13 +27,14 @@ import com.hasib.todo.Data.TaskViewModel;
 import com.hasib.todo.Fragments.BottomSheetFragment;
 import com.hasib.todo.Model.Priority;
 import com.hasib.todo.Model.Task;
+import com.hasib.todo.Util.TaskClickListener;
 import com.hasib.todo.Util.TaskRecyclerViewAdapter;
 import com.hasib.todo.databinding.ActivityMainBinding;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TaskClickListener {
 
     private RecyclerView recyclerView;
     private TaskRecyclerViewAdapter taskAdapter;
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         viewModel.getTasks().observe(this, tasks -> {
-            taskAdapter = new TaskRecyclerViewAdapter(tasks);
+            taskAdapter = new TaskRecyclerViewAdapter(tasks, this);
             recyclerView.setAdapter(taskAdapter);
         });
 
@@ -72,5 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayBottomSheetFragment() {
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void taskClicked(int id, Task task) {
+        Log.d(TAG, "taskClicked: " + task.getTask());
     }
 }
