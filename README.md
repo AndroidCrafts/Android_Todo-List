@@ -1,10 +1,5 @@
-<h1 style="color:red">Todo List -> Ongoing android project</h1>
+# Todo List -> Ongoing android project
 
 
-<style>
-  .red-text {
-    color: red;
-  }
-</style>
 
-<p class="red-text">This text will be red</p>
+<p stylecolor:redThis text will be red</p>
