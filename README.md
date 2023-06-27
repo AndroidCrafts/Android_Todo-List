@@ -2,4 +2,4 @@
 
 
 
-<p stylecolor:red>This text will be red</p>
+<p style="color:red">This text will be red</p>
