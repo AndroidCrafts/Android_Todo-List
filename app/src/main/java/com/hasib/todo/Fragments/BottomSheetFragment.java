@@ -3,37 +3,30 @@ package com.hasib.todo.Fragments;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
-import android.opengl.Visibility;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainer;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.hasib.todo.Data.MyViewModel;
 import com.hasib.todo.Data.TaskViewModel;
 import com.hasib.todo.Model.Priority;
 import com.hasib.todo.Model.Task;
 import com.hasib.todo.R;
-import com.hasib.todo.databinding.ActivityMainBinding;
 import com.hasib.todo.databinding.FragmentBottomSheetBinding;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.zip.Inflater;
 
 
 public class BottomSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -41,6 +34,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private Date dueDate;
     private Calendar calendar = Calendar.getInstance();
     private Context context;
+    private MyViewModel myViewModel;
     public BottomSheetFragment() {
     }
 
@@ -76,6 +70,16 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         binding.tomorrowDateId.setOnClickListener(this);
         //Next Week chip
         binding.nextWeekDateId.setOnClickListener(this);
+
+
+//        Get task from Activity
+        myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
+        Task task = myViewModel.getMutableTask().getValue();
+        if(task != null){
+            Log.d(TAG, "onViewCreated: " + task.getTask());
+        }else {
+            Log.d(TAG, "onViewCreated: " + "NULL");
+        }
     }
 
 
