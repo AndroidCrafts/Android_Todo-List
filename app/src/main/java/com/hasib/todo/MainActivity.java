@@ -2,6 +2,7 @@ package com.hasib.todo;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Constraints;
@@ -10,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,7 @@ import com.hasib.todo.Data.TaskViewModel;
 import com.hasib.todo.Fragments.BottomSheetFragment;
 import com.hasib.todo.Model.Priority;
 import com.hasib.todo.Model.Task;
+import com.hasib.todo.Util.Sugar;
 import com.hasib.todo.Util.TaskClickListener;
 import com.hasib.todo.Util.TaskRecyclerViewAdapter;
 import com.hasib.todo.databinding.ActivityMainBinding;
@@ -80,5 +83,21 @@ public class MainActivity extends AppCompatActivity implements TaskClickListener
     @Override
     public void taskClicked(int id, Task task) {
         Log.d(TAG, "taskClicked: " + task.getTask());
+    }
+
+    @Override
+    public void currentTask(Task task) {
+        Log.d(TAG, "currentTask: " + task.getTask());
+        AlertDialog.Builder alert = Sugar.alertDialog("Confirm Deletion",
+                "Delete " + task.getTask(), this);
+
+        alert.setPositiveButton("Delete", (dialog, which) -> {
+            TaskViewModel.delete(task);
+            dialog.dismiss();
+        });
+        alert.setNegativeButton("Cancel", (dialog, which) -> {
+           dialog.dismiss();
+        });
+        alert.show();
     }
 }

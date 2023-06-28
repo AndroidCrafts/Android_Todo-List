@@ -3,6 +3,7 @@ package com.hasib.todo.Util;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,12 +58,15 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         private final TextView textView;
         private final Chip chip;
         private final TaskClickListener taskClick;
+        private RadioButton radioButton;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
              textView = itemView.findViewById(R.id.task_id);
              chip = itemView.findViewById(R.id.chip_id);
              taskClick = taskClickListener;
+             radioButton = itemView.findViewById(R.id.radioButton);
              itemView.setOnClickListener(this);
+             radioButton.setOnClickListener(this);
         }
 
         public Chip getChip() {
@@ -78,6 +82,9 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
             Task currentTask = tasks.get(getAdapterPosition());
             if(v.getId() == R.id.task_row_layout){
                 taskClick.taskClicked(getAdapterPosition(), currentTask);
+            }
+            if(v.getId() == R.id.radioButton) {
+                taskClick.currentTask(currentTask);
             }
         }
     }

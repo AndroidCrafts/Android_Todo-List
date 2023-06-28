@@ -31,11 +31,20 @@ public class Repository {
         });
     }
 
-    public void deleteTasks(){
+    public void deleteAllTasks(){
         TaskRoomDatabase.executor.execute(new Runnable() {
             @Override
             public void run() {
                 dao.deleteAll();
+            }
+        });
+    }
+
+    public void deleteTask(Task task){
+        TaskRoomDatabase.executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.delete(task);
             }
         });
     }

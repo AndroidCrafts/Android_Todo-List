@@ -20,5 +20,12 @@
             - get dueDate from chips
             --> TIP: Calender.getInstance().add(Calendar.DAY_OF_YEAR, 0); -> set up today. if we give it 1 value it will give it tomorrow date and so on.
                 
-0-          NOT-DONE -> set Listen to the clicks on  each todo row to get its                 proper position and task
-            TIP: using an interface is a better way for this job.          
+9-          set Listen to the clicks on  each todo row to get its                             proper position and task
+            TIP: using an interface is a better way for this job.    
+                
+                
+10-         When Radio button clicked delete the todo
+
+11-         NOT-DONE --> Share data between Activity and fragment -> in this case                          take the current Task and share it to the bottomsheet                              fragment
+                
+                
