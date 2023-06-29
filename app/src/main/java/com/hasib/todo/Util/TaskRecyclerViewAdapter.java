@@ -1,25 +1,22 @@
 package com.hasib.todo.Util;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.hasib.todo.Model.Task;
 import com.hasib.todo.R;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder> {
     private final List<Task> tasks;
@@ -40,11 +37,25 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = tasks.get(position);
+
+
+        ColorStateList colorStateList = new ColorStateList(new int[][]{
+                new int[] {-android.R.attr.state_enabled},
+                new int[] {android.R.attr.state_enabled}
+        },
+                new int[]{
+                        Color.LTGRAY,
+                        Sugar.priorityColor(task)
+                });
+
         holder.getTextView().setText(task.getTask());
 //        String dateFormat = DateFormat.getDateInstance().format(task.getDueDate());
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
         simpleDateFormat.applyPattern("EEE, MMM d");
         holder.getChip().setText(simpleDateFormat.format(task.getDueDate()));
+        holder.getChip().setTextColor(Sugar.priorityColor(task));
+        holder.getChip().setChipIconTint(colorStateList);
+        holder.radioButton.setButtonTintList(colorStateList);
     }
 
 

@@ -1,10 +1,14 @@
 package com.hasib.todo.Util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.hasib.todo.Model.Priority;
+import com.hasib.todo.Model.Task;
 
 public class Sugar {
     public static AlertDialog.Builder alertDialog(String title, String message, Context context){
@@ -20,5 +24,17 @@ public class Sugar {
         if(imm != null){
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static int priorityColor(Task task) {
+        int color;
+        if (task.getPriority() == Priority.HIGH) {
+            color = Color.argb(150,201, 21, 23);
+        }else if (task.getPriority() == Priority.MEDIUM) {
+            color = Color.argb(150,255, 179,0);
+        }else {
+            color = Color.argb(150, 51, 181, 229);
+        }
+        return color;
     }
 }
