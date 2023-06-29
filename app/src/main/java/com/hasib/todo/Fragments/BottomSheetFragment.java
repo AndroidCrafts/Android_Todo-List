@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     private Calendar calendar = Calendar.getInstance();
     private Context context;
     private MyViewModel myViewModel;
+    private Priority priority;
+    private int selectedPriorityId;
+    private RadioButton selectedPriority;
     public BottomSheetFragment() {
     }
 
@@ -48,7 +52,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 //        Get date from calendar View
         binding.calendarViewId.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -69,6 +72,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         binding.tomorrowDateId.setOnClickListener(this);
         //Next Week chip
         binding.nextWeekDateId.setOnClickListener(this);
+        //Priority btn
+        binding.priorityBtnId.setOnClickListener(this);
 
 
 //        Get Task from selected task
@@ -98,16 +103,16 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         }
 
         // Save Btn
-        else if(id == binding.saveBtnId.getId() && dueDate != null){
+        else if(id == binding.saveBtnId.getId() && dueDate != null && priority != null){
             String text = binding.taskDetailId.getText().toString().trim();
             if(!TextUtils.isEmpty(text)){
-                Task task = new Task(text, Priority.HIGH, dueDate, Calendar.getInstance().getTime(), false);
+                Task task = new Task(text, priority, dueDate, Calendar.getInstance().getTime(), false);
                 //TODO: Update the task
                 if(myViewModel.getEditMode()){
                     Task newTask = myViewModel.getMutableTask().getValue();
                     assert newTask != null;
                     newTask.setTask(text);
-                    newTask.setPriority(Priority.HIGH);
+                    newTask.setPriority(priority);
                     newTask.setDateCreated(Calendar.getInstance().getTime());
                     newTask.setDueDate(Calendar.getInstance().getTime());
                     TaskViewModel.updateTask(newTask);
@@ -145,6 +150,31 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         else if(id == binding.nextWeekDateId.getId()){
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             dueDate = calendar.getTime();
+        }
+
+        //Priority Radio group
+        else if(id == binding.priorityBtnId.getId()){
+            binding.radioGroup2.setVisibility(
+                    binding.radioGroup2.getVisibility() == View.GONE ? View.VISIBLE : View.GONE
+            );
+
+            binding.radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+                if(binding.radioGroup2.getVisibility() == View.VISIBLE){
+                    selectedPriorityId = checkedId;
+                    selectedPriority = group.findViewById(selectedPriorityId);
+                    if(selectedPriority.getId() == R.id.high_priority_id){
+                        priority = Priority.HIGH;
+                    }else if(selectedPriority.getId() == R.id.medium_priority_id){
+                        priority = Priority.MEDIUM;
+                    }else if(selectedPriority.getId() == R.id.low_priority_id){
+                        priority = Priority.LOW;
+                    }else {
+                        priority = Priority.LOW;
+                    }
+                }else {
+                    priority = Priority.LOW;
+                }
+            });
         }
 
     }

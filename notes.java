@@ -30,7 +30,7 @@
 
 12         when a task clicked enter new task and update it
 
-13         NOT_DONE --> Hide keyboard and bottomsheet in specific states
+13         Hide keyboard and bottomsheet in specific states
 14         NOT_DONE --> Visible priority group and make it dynamic
 15         NOT_DONE --> Change task color state based on priority
                 

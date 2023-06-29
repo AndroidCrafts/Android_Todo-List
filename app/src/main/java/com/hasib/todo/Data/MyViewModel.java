@@ -8,6 +8,11 @@ import com.hasib.todo.Model.Task;
 public class MyViewModel extends androidx.lifecycle.ViewModel {
     private final MutableLiveData<Task> mutableTask = new MutableLiveData<>();
     private Boolean editMode;
+
+    public MyViewModel() {
+        this.editMode = false;
+    }
+
     public LiveData<Task> getMutableTask() {
         return mutableTask;
     }
