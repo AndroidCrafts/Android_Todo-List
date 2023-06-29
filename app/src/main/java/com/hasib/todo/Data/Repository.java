@@ -48,4 +48,13 @@ public class Repository {
             }
         });
     }
+
+    public void updateTask(Task task){
+        TaskRoomDatabase.executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.update(task);
+            }
+        });
+    }
 }

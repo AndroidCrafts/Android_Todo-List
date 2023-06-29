@@ -1,11 +1,8 @@
 package com.hasib.todo.Fragments;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 import com.hasib.todo.Data.MyViewModel;
 import com.hasib.todo.Data.TaskViewModel;
 import com.hasib.todo.Model.Priority;
@@ -72,16 +70,18 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         binding.nextWeekDateId.setOnClickListener(this);
 
 
-//        Get task from Activity
+//        Get Task from selected task
         myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
-        Task task = myViewModel.getMutableTask().getValue();
-        if(task != null){
-            Log.d(TAG, "onViewCreated: " + task.getTask());
-        }else {
-            Log.d(TAG, "onViewCreated: " + "NULL");
-        }
     }
 
+    // Get Task from selected task
+    @Override
+    public void onResume() {
+        super.onResume();
+        Task task = myViewModel.getMutableTask().getValue();
+        assert task != null;
+        binding.taskDetailId.setText(task.getTask());
+    }
 
     @Override
     public void onClick(View v) {
@@ -99,10 +99,25 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             String text = binding.taskDetailId.getText().toString().trim();
             if(!TextUtils.isEmpty(text)){
                 Task task = new Task(text, Priority.HIGH, dueDate, Calendar.getInstance().getTime(), false);
-                TaskViewModel.insert(task);
-                calendar = Calendar.getInstance();
-                dueDate = calendar.getTime();
-                Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show();
+
+                //TODO: Update the task
+                if(myViewModel.getEditMode()){
+                    Task newTask = myViewModel.getMutableTask().getValue();
+                    assert newTask != null;
+                    newTask.setTask(text);
+                    newTask.setPriority(Priority.HIGH);
+                    newTask.setDateCreated(Calendar.getInstance().getTime());
+                    newTask.setDueDate(Calendar.getInstance().getTime());
+                    TaskViewModel.updateTask(newTask);
+                    myViewModel.setEditMode(false);
+                    Snackbar.make(v, "Updated", Snackbar.LENGTH_SHORT).show();
+                }else {
+                    TaskViewModel.insert(task);
+                    calendar = Calendar.getInstance();
+                    dueDate = calendar.getTime();
+                    Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show();
+                }
+
             }else {
                 binding.taskDetailId.setError(getString(R.string.text_field_error_message));
             }

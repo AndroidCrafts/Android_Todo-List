@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements TaskClickListener
     @Override
     public void taskClicked(int id, Task task) {
         myViewModel.setMutableTask(task);
+        myViewModel.setEditMode(true);
         displayBottomSheetFragment();
     }
 

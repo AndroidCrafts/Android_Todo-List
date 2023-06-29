@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.hasib.todo.Model.Task;
 
@@ -21,4 +22,6 @@ public interface TaskDao {
     void deleteAll();
     @Query("SELECT * FROM tasks")
     LiveData<List<Task>> getAllTasks();
+    @Update
+    void update(Task task);
 }
