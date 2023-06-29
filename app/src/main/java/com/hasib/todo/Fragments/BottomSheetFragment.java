@@ -21,6 +21,7 @@ import com.hasib.todo.Data.TaskViewModel;
 import com.hasib.todo.Model.Priority;
 import com.hasib.todo.Model.Task;
 import com.hasib.todo.R;
+import com.hasib.todo.Util.Sugar;
 import com.hasib.todo.databinding.FragmentBottomSheetBinding;
 
 import java.util.Calendar;
@@ -79,8 +80,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
     public void onResume() {
         super.onResume();
         Task task = myViewModel.getMutableTask().getValue();
-        assert task != null;
-        binding.taskDetailId.setText(task.getTask());
+        if(task != null){
+            binding.taskDetailId.setText(task.getTask());
+        }
     }
 
     @Override
@@ -89,6 +91,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
 
         // Calendar Btn
         if(id == binding.calendarBtnId.getId()){
+            Sugar.hideKeyboard(v);
             binding.calendarGroupId.setVisibility(
                     binding.calendarGroupId.getVisibility() == Group.GONE ? Group.VISIBLE : Group.GONE
             );
@@ -99,7 +102,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             String text = binding.taskDetailId.getText().toString().trim();
             if(!TextUtils.isEmpty(text)){
                 Task task = new Task(text, Priority.HIGH, dueDate, Calendar.getInstance().getTime(), false);
-
                 //TODO: Update the task
                 if(myViewModel.getEditMode()){
                     Task newTask = myViewModel.getMutableTask().getValue();
@@ -111,11 +113,15 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
                     TaskViewModel.updateTask(newTask);
                     myViewModel.setEditMode(false);
                     Snackbar.make(v, "Updated", Snackbar.LENGTH_SHORT).show();
+                    Sugar.hideKeyboard(v);
+                    this.dismiss();
                 }else {
                     TaskViewModel.insert(task);
                     calendar = Calendar.getInstance();
                     dueDate = calendar.getTime();
                     Toast.makeText(context, "Added", Toast.LENGTH_SHORT).show();
+                    Sugar.hideKeyboard(v);
+                    this.dismiss();
                 }
 
             }else {
@@ -140,10 +146,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             dueDate = calendar.getTime();
         }
-
-
-
-
 
     }
 }
