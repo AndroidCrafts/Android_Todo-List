@@ -1,2 +1,2 @@
-# Todo List -> Ongoing android project
+# Todo List 
 
